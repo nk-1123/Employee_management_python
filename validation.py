@@ -1,10 +1,15 @@
 import re
+from datetime import datetime
+
+
+DeptList = ['HR', 'IT', 'Sales', 'Finance']
+DesigList = ['Manager', 'Vice President', 'Secratory', 'Intern', 'Software Devloper']
 
 def validateName(name):
     temp = name.split(" ")
 
     for i in temp:
-        if i.isalpha() and i.istitle():  #to check if name is string and capitalised
+        if i.isalpha() and i.istitle():  #to check if name is alphabets and is capitalised
             return True
         return False
 
@@ -32,10 +37,10 @@ def validateGender(gender):
     return False
 
 def validateContactNo(contact):
-    temp=re.fullmatch('[7-9][0-9]{9}',contact) #returns match object only if full pattern matches else returns none.
-    if temp!=None:
+    Pattern = re.compile("(0|91)?[6-9][0-9]{9}") #compile returns the specified source as a code object, ready to be executed
+    if Pattern.match(contact) != None:
         return True
-    return False
+    return False 
 
 def validateCity(city):
     if city.isalpha():
@@ -43,23 +48,27 @@ def validateCity(city):
     return False
 
 def validateDOB(dob):
-    pattern_str = r'^\d{2}-\d{2}-\d{4}$'
-    if re.match(pattern_str, dob):
-        return True
-    return False
+    format = "%d-%m-%Y"
+    res = True
+ 
+    try:
+        res = bool(datetime.strptime(dob, format))
+    except ValueError:
+        res = False
+    return res
 
 def validateDOJ(doj):
     return validateDOB(doj) #to reduce code redundancy
 
-def validateDeptName(dept, EmpList):
-    for i in EmpList:
-        if i.dept == dept:
+def validateDeptName(dept):
+    for i in DeptList:
+        if i == dept:
             return True
     return False 
 
-def validateDesignation(designation, EmpList): 
-    for i in EmpList:
-        if i.designation == designation:
+def validateDesignation(designation): 
+    for i in DesigList:
+        if i == designation:
             return True
     return False 
 
@@ -82,6 +91,6 @@ def validateAadhaar(adhaar):
     return True
 
 def validatePerformance(rating):
-    if rating.isdigit() and int(rating) < 6:
+    if rating < 11:
         return True
     return False
