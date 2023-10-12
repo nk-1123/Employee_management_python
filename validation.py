@@ -15,7 +15,7 @@ def validateName(name):
 
 
 def validateEmail(email):
-    regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+    regex = r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}$'
     if (re.fullmatch(regex, email)):
         return True
     return False
@@ -49,13 +49,13 @@ def validateCity(city):
 
 def validateDOB(dob):
     format = "%d-%m-%Y"
-    res = True
  
     try:
-        res = bool(datetime.strptime(dob, format))
+        datetime.strptime(dob, format)
+        return True
     except ValueError:
-        res = False
-    return res
+        return False
+    
 
 def validateDOJ(doj):
     return validateDOB(doj) #to reduce code redundancy
